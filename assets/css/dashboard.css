@@ -215,13 +215,6 @@ _:-ms-input-placeholder,
   font-size: 1em;
 }
 
-.demo-updates .mdl-card__title {
-  min-height: 300px;
-  background-image: url('../../assets/img/google_contacts.png');
-  background-position: 1% 100%;
-  background-repeat: no-repeat;
-}
-
 .demo-cards .mdl-card__actions a {
   color: #00BCD4;
   text-decoration: none;

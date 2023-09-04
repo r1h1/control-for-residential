@@ -112,55 +112,75 @@
             <div class="mdl-grid demo-content">
                 <div class="demo-cards mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--12-col">
                     <div class="mdl-card__title mdl-card--expand mdl-color--green-700">
-                        <h2 class="mdl-card__title-text">Reporte de Pagos</h2>
+                        <h2 class="mdl-card__title-text">Creación de casas / usuarios</h2>
                     </div>
                     <div class="mdl-card__supporting-text mdl-color-text--grey-600">
                         <div class="mdl-grid">
                             <div class="mdl-cell mdl-cell--12-col">
                                 <div
                                     class="mdl-textfield mdl-js-textfield mdl-cell--12-col mdl-textfield--floating-label">
-                                    <input class="mdl-textfield__input" type="text" id="sample1" maxlength="50">
-                                    <label class="mdl-textfield__label" for="sample1">Fecha de pago *</label>
+                                    <input class="mdl-textfield__input" type="text" id="fullname" maxlength="50">
+                                    <label class="mdl-textfield__label" for="sample1">Nombre completo *</label>
                                 </div>
                             </div>
                             <div class="mdl-cell mdl-cell--12-col">
-                                <label for="exampleFormControlInput1" class="form-label mt-4" style="color: #c0c0c0;">Método
-                                    de pago *</label>
+                                <div
+                                    class="mdl-textfield mdl-js-textfield mdl-cell--12-col mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" id="address" maxlength="50">
+                                    <label class="mdl-textfield__label" for="sample1">Dirección *</label>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--12-col">
+                                <div
+                                    class="mdl-textfield mdl-js-textfield mdl-cell--12-col mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" id="phonenumber" maxlength="50">
+                                    <label class="mdl-textfield__label" for="sample1">No. de teléfono *</label>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--12-col">
+                                <div
+                                    class="mdl-textfield mdl-js-textfield mdl-cell--12-col mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" id="email" maxlength="50">
+                                    <label class="mdl-textfield__label" for="sample1">Correo electrónico *</label>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--12-col">
+                                <div
+                                    class="mdl-textfield mdl-js-textfield mdl-cell--12-col mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" id="nit" maxlength="50">
+                                    <label class="mdl-textfield__label" for="sample1">CUI / NIT *</label>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--12-col">
+                                <div
+                                    class="mdl-textfield mdl-js-textfield mdl-cell--12-col mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="number" id="gender" min="0">
+                                    <label class="mdl-textfield__label" for="sample1">Genero (Masculino = 1, Femenino =
+                                        0) *</label>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--12-col">
+                                <div
+                                    class="mdl-textfield mdl-js-textfield mdl-cell--12-col mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="text" id="idhouse" maxlength="50">
+                                    <label class="mdl-textfield__label" for="sample1">Casa *</label>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--12-col">
+                                <div
+                                    class="mdl-textfield mdl-js-textfield mdl-cell--12-col mdl-textfield--floating-label">
+                                    <input class="mdl-textfield__input" type="password" id="sample1" maxlength="50">
+                                    <label class="mdl-textfield__label" for="sample1">Contraseña *</label>
+                                </div>
+                            </div>
+                            <div class="mdl-cell mdl-cell--12-col">
+                                <label for="exampleFormControlInput1" class="form-label" style="color: #c0c0c0;">Rol *</label>
                                 <select class="form-select" aria-label="Default select example" style="color: #757575;">
                                     <option value="">Selecciona uno...</option>
                                     <option value="1">One</option>
                                     <option value="2">Two</option>
                                     <option value="3">Three</option>
                                 </select>
-                            </div>
-                            <div class="mdl-cell mdl-cell--12-col">
-                                <label for="exampleFormControlInput1" class="form-label mt-4"
-                                    style="color: #c0c0c0;">Comprobante de pago
-                                    (Transferencias, Depósitos) *</label>
-                                    <input class="form-control" type="file" id="formFile">
-                            </div>
-                            <div class="mdl-cell mdl-cell--12-col">
-                                <div
-                                    class="mdl-textfield mdl-js-textfield mdl-cell--12-col mdl-textfield--floating-label">
-                                    <input class="mdl-textfield__input" type="text" id="sample1" maxlength="50">
-                                    <label class="mdl-textfield__label" for="sample1">Código de autorización *</label>
-                                </div>
-                            </div>
-                            <div class="mdl-cell mdl-cell--12-col">
-                                <div
-                                    class="mdl-textfield mdl-js-textfield mdl-cell--12-col mdl-textfield--floating-label">
-                                    <input class="mdl-textfield__input" type="text" id="sample1" maxlength="50">
-                                    <label class="mdl-textfield__label" for="sample1">Cantidad a reportar *</label>
-                                </div>
-                            </div>
-                            <div class="mdl-cell mdl-cell--12-col">
-                                <div
-                                    class="mdl-textfield mdl-js-textfield mdl-cell--12-col mdl-textfield--floating-label">
-                                    <textarea class="mdl-textfield__input" type="text" rows="8" id="description"
-                                        maxlength="249"></textarea>
-                                    <label class="mdl-textfield__label" for="sample5">Descripción del pago (máximo
-                                        250 caracteres) *</label>
-                                </div>
                             </div>
                         </div>
                         <button id="login-button"

@@ -22,26 +22,43 @@ VALUES
 INSERT INTO
     `rol`(`id`, `name`)
 VALUES
-    (3, 'Cliente');
-
-INSERT INTO
-    `rol`(`id`, `name`)
-VALUES
-    (4, 'Cocinero');
-
-INSERT INTO
-    `rol`(`id`, `name`)
-VALUES
-    (5, 'Contabilidad');
+    (3, 'Residente');
 
 -- CREACION DE TABLA MÓDULOS
 CREATE TABLE modules (
     id INT PRIMARY KEY NOT NULL auto_increment,
-    name VARCHAR(50) NOT NULL,
-    route VARCHAR(500) NOT NULL,
-    idrol INT,
+    menu TEXT NOT NULL,
+    idrol INT NOT NULL,
     FOREIGN KEY (idrol) REFERENCES rol(id)
 );
+
+-- INSERTADO DE MENU SEGUN ROL
+INSERT INTO
+    `modules`(`id`, `menu`, `idrol`)
+VALUES
+    (
+        '',
+        '<a class="mdl-navigation__link" href="dashboard.html"><i class="mdl-color-text--grey-100 material-icons" role="presentation">dashboard</i><span class="mdl-color-text--grey-100">Dashboard</span></a><a class="mdl-navigation__link" href="users-created.html"><i class="mdl-color-text--grey-100 material-icons" role="presentation">person</i><span class="mdl-color-text--grey-100">Creación de usuarios</span></a><a class="mdl-navigation__link" href="house-created.html"><i class="mdl-color-text--grey-100 material-icons" role="presentation">house</i><span class="mdl-color-text--grey-100">Creación de casas</span></a><a class="mdl-navigation__link" href="pending-pay-approve.html"><i class="mdl-color-text--grey-100 material-icons" role="presentation">payments</i><span class="mdl-color-text--grey-100">Aprobación de pagos</span></a><a class="mdl-navigation__link" href="pay-reported.html"><i class="mdl-color-text--grey-100 material-icons" role="presentation">shopping_cart</i><span class="mdl-color-text--grey-100">Reportar pago</span></a><a class="mdl-navigation__link" href="expense-reported.html"><i class="mdl-color-text--grey-100 material-icons" role="presentation">local_offer</i><span class="mdl-color-text--grey-100">Reportar gasto</span></a><a class="mdl-navigation__link" href="send-message.html"><i class="mdl-color-text--grey-100 material-icons" role="presentation">report</i><span class="mdl-color-text--grey-100">Enviar mensaje general</span></a><a class="mdl-navigation__link" href="view-message.html"><i class="mdl-color-text--grey-100 material-icons" role="presentation">forum</i><span class="mdl-color-text--grey-100">Mensajes generales</span></a><a class="mdl-navigation__link" href="view-reports.html"><i class="mdl-color-text--grey-100 material-icons" role="presentation">people</i><span class="mdl-color-text--grey-100">Reportes generales</span></a><div class="mdl-layout-spacer"></div>',
+        1
+    );
+
+INSERT INTO
+    `modules`(`id`, `menu`, `idrol`)
+VALUES
+    (
+        '[value-1]',
+        '<a class="mdl-navigation__link" href="dashboard.html"><i class="mdl-color-text--grey-100 material-icons" role="presentation">dashboard</i><span class="mdl-color-text--grey-100">Dashboard</span></a><a class="mdl-navigation__link" href="users-created.html"><i class="mdl-color-text--grey-100 material-icons" role="presentation">person</i><span class="mdl-color-text--grey-100">Creación de usuarios</span></a><a class="mdl-navigation__link" href="house-created.html"><i class="mdl-color-text--grey-100 material-icons" role="presentation">house</i><span class="mdl-color-text--grey-100">Creación de casas</span></a><a class="mdl-navigation__link" href="pending-pay-approve.html"><i class="mdl-color-text--grey-100 material-icons" role="presentation">payments</i><span class="mdl-color-text--grey-100">Aprobación de pagos</span></a><a class="mdl-navigation__link" href="expense-reported.html"><i class="mdl-color-text--grey-100 material-icons" role="presentation">local_offer</i><span class="mdl-color-text--grey-100">Reportar gasto</span></a><a class="mdl-navigation__link" href="send-message.html"><i class="mdl-color-text--grey-100 material-icons" role="presentation">report</i><span class="mdl-color-text--grey-100">Enviar mensaje general</span></a><a class="mdl-navigation__link" href="view-message.html"><i class="mdl-color-text--grey-100 material-icons" role="presentation">forum</i><span class="mdl-color-text--grey-100">Mensajes generales</span></a><a class="mdl-navigation__link" href="view-reports.html"><i class="mdl-color-text--grey-100 material-icons" role="presentation">people</i><span class="mdl-color-text--grey-100">Reportes generales</span></a><div class="mdl-layout-spacer"></div>',
+        2
+    );
+
+INSERT INTO
+    `modules`(`id`, `menu`, `idrol`)
+VALUES
+    (
+        '[value-1]',
+        '<a class="mdl-navigation__link" href="dashboard.html"><i class="mdl-color-text--grey-100 material-icons" role="presentation">dashboard</i><span class="mdl-color-text--grey-100">Dashboard</span></a><a class="mdl-navigation__link" href="pay-reported.html"><i class="mdl-color-text--grey-100 material-icons" role="presentation">shopping_cart</i><span class="mdl-color-text--grey-100">Reportar pago</span></a><a class="mdl-navigation__link" href="view-message.html"><i class="mdl-color-text--grey-100 material-icons" role="presentation">forum</i><span class="mdl-color-text--grey-100">Mensajes generales</span></a><a class="mdl-navigation__link" href="view-reports.html"><i class="mdl-color-text--grey-100 material-icons" role="presentation">people</i><span class="mdl-color-text--grey-100">Reportes generales</span></a><div class="mdl-layout-spacer"></div>',
+        3
+    );
 
 -- CREATE HOUSES
 CREATE TABLE houses(
@@ -98,10 +115,11 @@ CREATE TABLE userspayments(
     paymentmethod INT,
     filepayment TEXT,
     authorizationcode VARCHAR(50),
-    totalpay NUMERIC(10,2),
+    totalpay NUMERIC(10, 2),
     comment VARCHAR(250),
     createddate VARCHAR(50),
     paymentdateandhour VARCHAR(50),
+    paystatus INT,
     FOREIGN KEY (iduserpay) REFERENCES users(id),
     FOREIGN KEY (idpaymentcontext) REFERENCES typeofpayment(id)
 );
@@ -111,7 +129,7 @@ CREATE TABLE administrationpayments(
     id INT PRIMARY KEY NOT NULL auto_increment,
     idadminpay INT,
     paymentmethod INT,
-    totalpay NUMERIC(10,2),
+    totalpay NUMERIC(10, 2),
     comment VARCHAR(250),
     createddate VARCHAR(50),
     paymentdateandhour VARCHAR(50),

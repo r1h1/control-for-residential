@@ -1,5 +1,5 @@
-
-
+//ROUTES
+const globalApiGetModulesPerRol = 'http://localhost:3002/api/v1/modules/rol/';
 
 
 //VALIDATE EXIST TOKEN IN SESSION STORAGE
@@ -35,3 +35,47 @@ const closeSession = () => {
 
 //EXECUTE LOOP 1 MINUTE FUNCTION VALIDATE TOKEN
 setInterval(validateToken, 60000);
+
+
+// GLOBAL USER INFORMATION
+let userInformation = atob(sessionStorage.getItem('sessionInfo'));
+userInformation = JSON.parse(userInformation);
+
+
+//GET MENU FOR USER ROL
+const menuForUserRol = () => {
+
+    let rol = userInformation[0].idrol;
+
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem('signInToken'));
+
+    let requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+    };
+
+    fetch(globalApiGetModulesPerRol + rol, requestOptions)
+        .then(response => response.json())
+        .then(dataObtained => showData(dataObtained))
+        .catch(error => console.log('Error: ' + error))
+
+    const showData = (dataObtained) => {
+        try {
+            let menuModules = '';
+            for (let i = 0; i < dataObtained.body.length; i++) {
+                menuModules += `
+                    ${dataObtained.body[i].menu}
+                `;
+            }
+            document.getElementById('menuModules').innerHTML = menuModules;
+
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+}
+menuForUserRol();

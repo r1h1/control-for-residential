@@ -37,9 +37,52 @@ const closeSession = () => {
 setInterval(validateToken, 60000);
 
 
+// GLOBAL USER INFORMATION
+let userInformation = atob(sessionStorage.getItem('sessionInfo'));
+userInformation = JSON.parse(userInformation);
+
+
 //SET USER INFO IN ADMIN PANEL
 const setUserInfo = () => {
-    const userInformation = atob(sessionStorage.getItem('sessionInfo'));
-    document.getElementById('fullName').innerHTML = userInformation;
+    document.getElementById('fullName').innerHTML = userInformation[0].fullname;
 }
 setUserInfo();
+
+
+//GET MENU FOR USER ROL
+const menuForUserRol = () => {
+
+    let rol = userInformation[0].idrol;
+
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem('signInToken'));
+
+    let requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+    };
+
+    fetch(globalApiGetModulesPerRol + rol, requestOptions)
+        .then(response => response.json())
+        .then(dataObtained => showData(dataObtained))
+        .catch(error => console.log('Error: ' + error))
+
+    const showData = (dataObtained) => {
+        try {
+            let menuModules = '';
+            for (let i = 0; i < dataObtained.body.length; i++) {
+                menuModules += `
+                    ${dataObtained.body[i].menu}
+                `;
+            }
+            document.getElementById('menuModules').innerHTML = menuModules;
+
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+}
+menuForUserRol();

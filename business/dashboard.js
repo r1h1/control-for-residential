@@ -50,8 +50,8 @@ setUserInfo();
 
 
 //GET MENU FOR USER ROL
-const menuForUserRol = () => {
-
+const menuForUserRol = async () => {
+    
     let rol = userInformation[0].idrol;
 
     let myHeaders = new Headers();
@@ -64,11 +64,6 @@ const menuForUserRol = () => {
         redirect: 'follow'
     };
 
-    fetch(globalApiGetModulesPerRol + rol, requestOptions)
-        .then(response => response.json())
-        .then(dataObtained => showData(dataObtained))
-        .catch(error => console.log('Error: ' + error))
-
     const showData = (dataObtained) => {
         try {
             let menuModules = '';
@@ -78,11 +73,17 @@ const menuForUserRol = () => {
                 `;
             }
             document.getElementById('menuModules').innerHTML = menuModules;
-
-        }
-        catch (err) {
+        } catch (err) {
             console.log(err);
         }
+    }
+
+    try {
+        const response = await fetch(globalApiGetModulesPerRol + rol, requestOptions);
+        const dataObtained = await response.json();
+        showData(dataObtained);
+    } catch (error) {
+        console.log('Error: ' + error);
     }
 }
 menuForUserRol();

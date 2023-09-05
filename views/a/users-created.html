@@ -38,8 +38,6 @@
     <meta name="msapplication-TileImage" content="../../images/touch/ms-touch-icon-144x144-precomposed.png">
     <meta name="msapplication-TileColor" content="#3372DF">
 
-    <link rel="shortcut icon" href="../../images/favicon.png">
-
     <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
     <!--
     <link rel="canonical" href="http://www.example.com/">
@@ -52,6 +50,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
+
+    <!-- SWEET ALERT 2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -137,32 +138,31 @@
                                 </div>
                             </div>
                             <div class="mdl-cell mdl-cell--12-col">
-                                <div
-                                    class="mdl-textfield mdl-js-textfield mdl-cell--12-col mdl-textfield--floating-label">
-                                    <input class="mdl-textfield__input" type="text" id="idhouse" maxlength="50">
-                                    <label class="mdl-textfield__label" for="sample1">Casa *</label>
-                                </div>
+                                <label for="exampleFormControlInput1" class="form-label" style="color: #c0c0c0;">Casa a
+                                    la que pertenece
+                                    *</label>
+                                <select class="form-select" aria-label="Default select example" style="color: #757575;"
+                                    id="houses">
+                                </select>
                             </div>
                             <div class="mdl-cell mdl-cell--12-col">
                                 <div
                                     class="mdl-textfield mdl-js-textfield mdl-cell--12-col mdl-textfield--floating-label">
-                                    <input class="mdl-textfield__input" type="password" id="sample1" maxlength="50">
+                                    <input class="mdl-textfield__input" type="password" id="password" maxlength="50">
                                     <label class="mdl-textfield__label" for="sample1">Contraseña *</label>
                                 </div>
                             </div>
                             <div class="mdl-cell mdl-cell--12-col">
                                 <label for="exampleFormControlInput1" class="form-label" style="color: #c0c0c0;">Rol
                                     *</label>
-                                <select class="form-select" aria-label="Default select example" style="color: #757575;">
-                                    <option value="">Selecciona uno...</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+                                <select class="form-select" aria-label="Default select example" style="color: #757575;"
+                                    id="rol">
                                 </select>
                             </div>
                         </div>
                         <button id="login-button"
-                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--light-green-800 mdl-color-text--white">
+                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--light-green-800 mdl-color-text--white"
+                            onclick="createUser()">
                             Enviar
                         </button>
                     </div>

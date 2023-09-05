@@ -1,5 +1,6 @@
 //ROUTES
 const globalApiGetModulesPerRol = 'http://localhost:3002/api/v1/modules/rol/';
+const globalApiMessages = 'http://localhost:3002/api/v1/messages/';
 
 
 //VALIDATE EXIST TOKEN IN SESSION STORAGE
@@ -43,7 +44,7 @@ userInformation = JSON.parse(userInformation);
 
 
 //GET MENU FOR USER ROL
-const menuForUserRol = () => {
+const menuForUserRol = async () => {
 
     let rol = userInformation[0].idrol;
 
@@ -57,11 +58,6 @@ const menuForUserRol = () => {
         redirect: 'follow'
     };
 
-    fetch(globalApiGetModulesPerRol + rol, requestOptions)
-        .then(response => response.json())
-        .then(dataObtained => showData(dataObtained))
-        .catch(error => console.log('Error: ' + error))
-
     const showData = (dataObtained) => {
         try {
             let menuModules = '';
@@ -71,11 +67,67 @@ const menuForUserRol = () => {
                 `;
             }
             document.getElementById('menuModules').innerHTML = menuModules;
-
-        }
-        catch (err) {
+        } catch (err) {
             console.log(err);
         }
     }
+
+    try {
+        const response = await fetch(globalApiGetModulesPerRol + rol, requestOptions);
+        const dataObtained = await response.json();
+        showData(dataObtained);
+    } catch (error) {
+        console.log('Error: ' + error);
+    }
 }
 menuForUserRol();
+
+
+//GET MESSAGES
+const getMessages = async () => {
+
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem('signInToken'));
+
+    let requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+    };
+
+    const showData = (dataObtained) => {
+        try {
+            let messages = '';
+            for (let i = 0; i < dataObtained.body.length; i++) {
+                messages += `
+                        <div class="mdl-cell mdl-cell--4-col">
+                            <div class="demo-card-image mdl-card mdl-shadow--2dp">
+                                <div class="mdl-card__title mdl-card--expand mdl-color--green-700">
+                                    <h2 class="mdl-card__title-text" style="color: #fff;">${dataObtained.body[i].context}</h2>
+                                </div>
+                                <div class="mdl-card__supporting-text mdl-color-text--grey-600">
+                                    <p>${dataObtained.body[i].createdate}</p>
+                                    <p>${dataObtained.body[i].idusersend}</p>
+                                    <br>
+                                    <p>${dataObtained.body[i].description}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+            }
+            document.getElementById('messages').innerHTML = messages;
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    try {
+        const response = await fetch(globalApiMessages, requestOptions);
+        const dataObtained = await response.json();
+        showData(dataObtained);
+    } catch (error) {
+        console.log('Error: ' + error);
+    }
+}
+getMessages();

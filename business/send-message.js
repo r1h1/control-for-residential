@@ -1,5 +1,6 @@
 //ROUTES
 const globalApiGetModulesPerRol = 'http://localhost:3002/api/v1/modules/rol/';
+const globalApiMessages = 'http://localhost:3002/api/v1/messages/';
 
 
 //VALIDATE EXIST TOKEN IN SESSION STORAGE
@@ -43,8 +44,7 @@ userInformation = JSON.parse(userInformation);
 
 
 //GET MENU FOR USER ROL
-const menuForUserRol = () => {
-
+const menuForUserRol = async () => {
     let rol = userInformation[0].idrol;
 
     let myHeaders = new Headers();
@@ -57,11 +57,6 @@ const menuForUserRol = () => {
         redirect: 'follow'
     };
 
-    fetch(globalApiGetModulesPerRol + rol, requestOptions)
-        .then(response => response.json())
-        .then(dataObtained => showData(dataObtained))
-        .catch(error => console.log('Error: ' + error))
-
     const showData = (dataObtained) => {
         try {
             let menuModules = '';
@@ -71,11 +66,125 @@ const menuForUserRol = () => {
                 `;
             }
             document.getElementById('menuModules').innerHTML = menuModules;
-
-        }
-        catch (err) {
+        } catch (err) {
             console.log(err);
         }
     }
+
+    try {
+        const response = await fetch(globalApiGetModulesPerRol + rol, requestOptions);
+        const dataObtained = await response.json();
+        showData(dataObtained);
+    } catch (error) {
+        console.log('Error: ' + error);
+    }
 }
 menuForUserRol();
+
+
+//SEND MESSAGE
+const sendMessage = () => {
+
+    // Obtener la fecha actual
+    const fechaActual = new Date();
+
+    // Obtener el año, mes y día
+    const año = fechaActual.getFullYear();
+    const mes = fechaActual.getMonth() + 1;
+    const dia = fechaActual.getDate();
+    const hora = fechaActual.getHours();
+    const minutos = fechaActual.getMinutes();
+    const segundos = fechaActual.getSeconds();
+
+    let sendDate = dia + '-' + mes + '-' + año + ' ,' + hora + ':' + minutos + ':' + segundos;
+    let context = document.getElementById('context').value;
+    let description = document.getElementById('description').value;
+    let err = 'Error Interno';
+
+    if (context === '' || description === '') {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Advertencia',
+            text: 'Llena todos los datos que se te solicitan',
+            footer: 'Si el problema persiste, por favor comunicarse con el administrador o enviar un mensaje usando la opción de soporte indicando el error.',
+            confirmButtonText: 'Entendido'
+        });
+    }
+    else {
+
+        let myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem('signInToken'));
+
+        var raw = JSON.stringify({
+            "id": 0,
+            "idusersend": userInformation[0].id,
+            "context": context,
+            "description": description,
+            "createdate": sendDate,
+        });
+
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch(globalApiMessages, requestOptions)
+            .then(response => response.json())
+            .then(dataObtained => showData(dataObtained))
+            .catch(error => err = error);
+
+        const showData = (dataObtained) => {
+            if (dataObtained.body === 'Error de Servidor') {
+                Swal.fire({
+                    icon: 'error',
+                    title: '¡Lo Sentimos!',
+                    text: 'No se pudo concretar la operación, intenta de nuevo',
+                    footer: 'Si el problema persiste, por favor comunicarse con el administrador o enviar un mensaje usando la opción de soporte indicando el error.',
+                    confirmButtonText: 'Entendido'
+                });
+            }
+            else {
+                if (dataObtained.status === 200 || dataObtained.status === 201 || dataObtained.status === 304) {
+                    try {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '¡Correcto!',
+                            text: 'Mensaje enviado con éxito',
+                            footer: '',
+                            showDenyButton: false,
+                            showCancelButton: false,
+                            confirmButtonText: 'Entendido',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            } else if (result.isDenied) {
+                                window.location.reload();
+                            }
+                        });
+                    }
+                    catch (err) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: '¡Lo Sentimos!',
+                            text: 'Sa ha generado un error interno',
+                            footer: 'Si el problema persiste, por favor comunicarse con el administrador o enviar un mensaje usando la opción de soporte indicando el error.',
+                            confirmButtonText: 'Entendido'
+                        });
+                    }
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '¡Lo Sentimos!',
+                        text: 'Sa ha generado un error interno',
+                        footer: 'Si el problema persiste, por favor comunicarse con el administrador o enviar un mensaje usando la opción de soporte indicando el error.',
+                        confirmButtonText: 'Entendido'
+                    });
+                }
+            }
+        }
+    }
+}

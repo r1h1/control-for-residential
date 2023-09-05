@@ -20,39 +20,8 @@ module.exports = function (dbInjected) {
     }
 
     //AÑADIR DATOS
-    const addData = async (body) => {
-        const userObject = {
-            id: body.id,
-            fullname: body.fullname,
-            address: body.address,
-            phonenumber: body.phonenumber,
-            email: body.email,
-            nit: body.nit,
-            idrol: body.idrol,
-            idhouse: body.idhouse,
-            status: body.status,
-            gender: body.gender,
-        }
-
-        const response = await db.addData(dataTable, userObject);
-        var response2 = '';
-
-        var insertId = 0;
-        if (body.id == 0) {
-            insertId = response.insertId;
-        }
-        else {
-            insertId = body.id;
-        }
-        if (body.user || body.password) {
-            response2 = await auth.addData({
-                id: insertId,
-                user: body.user,
-                password: body.password
-            });
-        }
-
-        return response2;
+    const addData = (body) => {
+        return db.addData(dataTable, body);
     }
 
     //BORRAR DATOS

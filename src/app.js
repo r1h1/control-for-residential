@@ -4,8 +4,12 @@ var cors = require('cors');
 const bodyParser = require('body-parser');
 const config = require('./config');
 const auth = require('./modules/auth/routes.js');
-const users = require('./modules/users/routes.js');
+const houses = require('./modules/houses/routes.js');
+const messages = require('./modules/messages/routes.js');
 const modules = require('./modules/modules/routes.js');
+const typeofpayment = require('./modules/typeofpayment/routes.js');
+const users = require('./modules/users/routes.js');
+const userspayments = require('./modules/userspayments/routes.js');
 const morgan = require('morgan');
 const { error } = require('./network/responses');
 const errors = require('./network/errors');
@@ -23,8 +27,12 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 //ROUTERS
 app.set('port', config.app.port);
 app.use('/api/v1/auth', auth);
-app.use('/api/v1/users', users);
+app.use('/api/v1/houses', houses);
+app.use('/api/v1/messages', messages);
 app.use('/api/v1/modules', modules);
+app.use('/api/v1/typeofpayment', typeofpayment);
+app.use('/api/v1/users', users);
+app.use('/api/v1/userspayments', userspayments);
 
 app.use(errors);
 

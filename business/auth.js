@@ -2,6 +2,7 @@
 const globalApiUrl = 'http://localhost:3002/api/v1/auth/login';
 const userApiUrl = 'http://localhost:3002/api/v1/users';
 
+
 //GET AND SET TOKEN WITH POST DATA OBTAINED
 const signIn = () => {
 

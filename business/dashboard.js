@@ -84,6 +84,9 @@ const menuForUserRol = async () => {
         showData(dataObtained);
     } catch (error) {
         console.log('Error: ' + error);
+        sessionStorage.removeItem('signInToken');
+        sessionStorage.removeItem('sessionInfo');
+        window.location.href = '../../views/login.html';
     }
 }
 menuForUserRol();

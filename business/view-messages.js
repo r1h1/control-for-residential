@@ -45,7 +45,7 @@ userInformation = JSON.parse(userInformation);
 
 //GET MENU FOR USER ROL
 const menuForUserRol = async () => {
-
+    
     let rol = userInformation[0].idrol;
 
     let myHeaders = new Headers();
@@ -78,6 +78,9 @@ const menuForUserRol = async () => {
         showData(dataObtained);
     } catch (error) {
         console.log('Error: ' + error);
+        sessionStorage.removeItem('signInToken');
+        sessionStorage.removeItem('sessionInfo');
+        window.location.href = '../../views/login.html';
     }
 }
 menuForUserRol();
@@ -108,8 +111,6 @@ const getMessages = async () => {
                                 </div>
                                 <div class="mdl-card__supporting-text mdl-color-text--grey-600">
                                     <p>${dataObtained.body[i].createdate}</p>
-                                    <p>${dataObtained.body[i].idusersend}</p>
-                                    <br>
                                     <p>${dataObtained.body[i].description}</p>
                                 </div>
                             </div>

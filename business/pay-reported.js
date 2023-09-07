@@ -78,6 +78,9 @@ const menuForUserRol = async () => {
         showData(dataObtained);
     } catch (error) {
         console.log('Error: ' + error);
+        sessionStorage.removeItem('signInToken');
+        sessionStorage.removeItem('sessionInfo');
+        window.location.href = '../../views/login.html';
     }
 }
 menuForUserRol();
@@ -312,4 +315,182 @@ const addPhotoInUserPaymentReport = (id) => {
             }
         }
     }
+}
+
+
+
+// GET USER PAYMENT
+const getAllUsersPayments = async () => {
+
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem('signInToken'));
+
+    let requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+    };
+
+    const showData = (dataObtained) => {
+        try {
+            let bodydata = '';
+            let filePayment = '';
+            let deleteButton = '';
+            for (let i = 0; i < dataObtained.body.length; i++) {
+
+
+                //IF THE FILE PAYMENT DATA IS EQUAL TO NO APLICA, NO SHOW IMG
+                if (dataObtained.body[i].filepayment === 'NO APLICA' || dataObtained.body[i].filepayment === '' || dataObtained.body[i].filepayment === null) {
+                    filePayment = 'NO APLICA';
+                }
+                else {
+                    filePayment = `<img src="${dataObtained.body[i].filepayment}" alt="payment-photo" width="200"/>`;
+                }
+
+                //BUTTON DELETE SHOW WHERE PERMISSION IS EQUAL TO 1 OR 2, ELSE NOT SHOW
+                if (userInformation[0].idrol === 1 || userInformation[0].idrol === 2) {
+                    deleteButton = `<button class="btn btn-danger" onclick="deleteUserPayment(${dataObtained.body[i].id})">
+                    <i class="mdl-color-text--gray-100 material-icons"
+                    role="presentation">delete</i></button>`;
+                }
+                else {
+                    deleteButton = '';
+                }
+
+
+                bodydata += `
+                    <tr class="text-center">
+                        <td>${dataObtained.body[i].iduserpay}</td>
+                        <td>${dataObtained.body[i].paymentmethod === 1 ? 'Efectivo' : dataObtained.body[i].paymentmethod === 2 ? 'Tarjeta' : dataObtained.body[i].paymentmethod === 3 ? 'Transferencia Bancaria' :
+                        dataObtained.body[i].paymentmethod === 4 ? 'Crédito' : 'Otro'}</td>
+                        <td>${filePayment}</td>
+                        <td>${dataObtained.body[i].authorizationcode}</td>
+                        <td>Q${dataObtained.body[i].totalpay.toFixed(2)}</td>
+                        <td>${dataObtained.body[i].comment}</td>
+                        <td>${dataObtained.body[i].paymentdateandhour}</td>
+                        <td>${dataObtained.body[i].paystatus === 0 ? 'PENDIENTE APROBACIÓN' : 'APROBADO'}</td>
+                        <td>${deleteButton}</td>
+                    </tr>
+                `;
+
+            }
+            document.getElementById('bodydata').innerHTML = bodydata;
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    try {
+        const response = await fetch(globalApiGetPaymentReport, requestOptions);
+        const dataObtained = await response.json();
+        showData(dataObtained);
+    } catch (error) {
+        Swal.fire({
+            icon: 'error',
+            title: '¡Lo Sentimos!',
+            text: 'Desconexión con el servidor de datos, refresque',
+            footer: 'Si el problema persiste, por favor comunicarse con el administrador o enviar un mensaje usando la opción de soporte indicando el error.',
+            confirmButtonText: 'Entendido'
+        });
+    }
+}
+getAllUsersPayments();
+
+
+
+//DELETE USER PAYMENT
+const deleteUserPayment = (id) => {
+
+    Swal.fire({
+        icon: 'info',
+        title: '¿Seguro?',
+        text: 'Al guardar los cambios estos no podrán ser recuperados',
+        showDenyButton: true,
+        confirmButtonText: 'Continuar',
+        denyButtonText: `Cancelar`,
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            let myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem('signInToken'));
+
+            var bodyToDelete = JSON.stringify({
+                "id": id
+            });
+
+            var requestOptions = {
+                method: 'PUT',
+                headers: myHeaders,
+                body: bodyToDelete,
+                redirect: 'follow'
+            };
+
+            fetch(globalApiGetPaymentReport, requestOptions)
+                .then(response => response.json())
+                .then(dataObtained => showData(dataObtained))
+                .catch(error => console.log('Error: ' + error))
+
+            const showData = (dataObtained) => {
+                if (dataObtained.body === 'Error de Servidor') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '¡Lo Sentimos!',
+                        text: 'No se pudo concretar la operación, intenta de nuevo',
+                        footer: 'Si el problema persiste, por favor comunicarse con el administrador o enviar un mensaje usando la opción de soporte indicando el error.',
+                        confirmButtonText: 'Entendido'
+                    });
+                }
+                else {
+                    if (dataObtained.status === 200 || dataObtained.status === 201 || dataObtained.status === 304) {
+                        try {
+                            Swal.fire({
+                                icon: 'success',
+                                title: '¡Correcto!',
+                                text: 'La operación se completó con éxito',
+                                footer: '',
+                                showDenyButton: false,
+                                showCancelButton: false,
+                                confirmButtonText: 'Entendido',
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.reload();
+                                } else if (result.isDenied) {
+                                    window.location.reload();
+                                }
+                            })
+                        }
+                        catch (err) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: '¡Lo Sentimos!',
+                                text: 'Sa ha generado un error interno',
+                                footer: 'Si el problema persiste, por favor comunicarse con el administrador o enviar un mensaje usando la opción de soporte indicando el error.',
+                                confirmButtonText: 'Entendido'
+                            });
+                        }
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: '¡Lo Sentimos!',
+                            text: 'Sa ha generado un error interno',
+                            footer: 'Si el problema persiste, por favor comunicarse con el administrador o enviar un mensaje usando la opción de soporte indicando el error.',
+                            confirmButtonText: 'Entendido'
+                        });
+                    }
+                }
+            }
+        } else if (result.isDenied) {
+            Swal.fire({
+                position: 'top-center',
+                icon: 'info',
+                title: '¡No te preocupes!',
+                text: 'No se modificó nada',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        }
+    });
 }

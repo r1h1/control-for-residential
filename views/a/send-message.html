@@ -50,6 +50,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.cyan-light_blue.min.css">
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
     <!-- SWEET ALERT 2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -119,10 +121,33 @@
                         </button>
                     </div>
                 </div>
+                <div class="demo-separator mdl-cell--1-col"></div>
+                <div class="demo-cards mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--12-col">
+                    <div class="mdl-card__title mdl-card--expand mdl-color--green-700">
+                        <h2 class="mdl-card__title-text">Mantenimiento</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text mdl-color-text--grey-600 table-responsive w-100">
+                        <table class="table table-striped text-center text-muted">
+                            <thead>
+                                <tr>
+                                    <th>Asunto</th>
+                                    <th>Mensaje</th>
+                                    <th>Envio</th>
+                                </tr>
+                            </thead>
+                            <tbody id="messages">
+                                <!-- BODY MESSAGES -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
     <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
     <script src="../../business/send-message.js"></script>
 </body>
 

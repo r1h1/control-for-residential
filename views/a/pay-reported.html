@@ -131,7 +131,7 @@
                             <div class="mdl-cell mdl-cell--12-col">
                                 <div
                                     class="mdl-textfield mdl-js-textfield mdl-cell--12-col mdl-textfield--floating-label">
-                                    <input class="mdl-textfield__input" type="text" id="totalpay" maxlength="50">
+                                    <input class="mdl-textfield__input" type="number" id="totalpay" min="0.01">
                                     <label class="mdl-textfield__label" for="sample1">Cantidad a reportar *</label>
                                 </div>
                             </div>
@@ -159,72 +159,22 @@
                     <div class="mdl-card__title mdl-card--expand mdl-color--green-700">
                         <h2 class="mdl-card__title-text">Mantenimiento</h2>
                     </div>
-                    <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-                        <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp mdl-cell mdl-cell--12-col">
+                    <div class="mdl-card__supporting-text mdl-color-text--grey-600 table-responsive w-100">
+                        <table class="table table-striped text-center text-muted">
                             <thead>
                                 <tr>
-                                    <th class="mdl-data-table__cell--non-numeric">Mes</th>
-                                    <th>Recaudado (Q)</th>
-                                    <th>Gastado (Q)</th>
+                                    <th>Usuario paga</th>
+                                    <th>Método de pago</th>
+                                    <th>Comprobante</th>
+                                    <th>Autorización</th>
+                                    <th>Total pagado</th>
+                                    <th>Comentario</th>
+                                    <th>Fecha y hora pago</th>
+                                    <th>Estado del pago</th>
                                 </tr>
                             </thead>
-                            <tbody>
-
-                                <tr>
-                                    <td class="mdl-data-table__cell--non-numeric">Febrero</td>
-                                    <td>99489.00</td>
-                                    <td>40364.80</td>
-                                </tr>
-                                <tr>
-                                    <td class="mdl-data-table__cell--non-numeric">Marzo</td>
-                                    <td>99489.00</td>
-                                    <td>40364.80</td>
-                                </tr>
-                                <tr>
-                                    <td class="mdl-data-table__cell--non-numeric">Abril</td>
-                                    <td>99489.00</td>
-                                    <td>40364.80</td>
-                                </tr>
-                                <tr>
-                                    <td class="mdl-data-table__cell--non-numeric">Mayo</td>
-                                    <td>99489.00</td>
-                                    <td>40364.80</td>
-                                </tr>
-                                <tr>
-                                    <td class="mdl-data-table__cell--non-numeric">Junio</td>
-                                    <td>99489.00</td>
-                                    <td>40364.80</td>
-                                </tr>
-                                <tr>
-                                    <td class="mdl-data-table__cell--non-numeric">Julio</td>
-                                    <td>99489.00</td>
-                                    <td>40364.80</td>
-                                </tr>
-                                <tr>
-                                    <td class="mdl-data-table__cell--non-numeric">Agosto</td>
-                                    <td>99489.00</td>
-                                    <td>40364.80</td>
-                                </tr>
-                                <tr>
-                                    <td class="mdl-data-table__cell--non-numeric">Septiembre</td>
-                                    <td>99489.00</td>
-                                    <td>40364.80</td>
-                                </tr>
-                                <tr>
-                                    <td class="mdl-data-table__cell--non-numeric">Octubre</td>
-                                    <td>99489.00</td>
-                                    <td>40364.80</td>
-                                </tr>
-                                <tr>
-                                    <td class="mdl-data-table__cell--non-numeric">Noviembre</td>
-                                    <td>99489.00</td>
-                                    <td>40364.80</td>
-                                </tr>
-                                <tr>
-                                    <td class="mdl-data-table__cell--non-numeric">Diciembre</td>
-                                    <td>99489.00</td>
-                                    <td>40364.80</td>
-                                </tr>
+                            <tbody id="bodydata">
+                                <!-- DATA -->
                             </tbody>
                         </table>
                     </div>

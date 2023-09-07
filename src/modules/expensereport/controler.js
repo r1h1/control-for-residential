@@ -1,4 +1,4 @@
-const dataTable = 'typeofpayment';
+const dataTable = 'administrationpayments';
 const auth = require('../auth');
 
 module.exports = function (dbInjected) {

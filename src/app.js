@@ -8,7 +8,7 @@ const houses = require('./modules/houses/routes.js');
 const messages = require('./modules/messages/routes.js');
 const modules = require('./modules/modules/routes.js');
 const rol = require('./modules/rol/routes.js');
-const typeofpayment = require('./modules/typeofpayment/routes.js');
+const expensereport = require('./modules/expensereport/routes.js');
 const users = require('./modules/users/routes.js');
 const userspayments = require('./modules/userspayments/routes.js');
 const morgan = require('morgan');
@@ -32,7 +32,7 @@ app.use('/api/v1/houses', houses);
 app.use('/api/v1/messages', messages);
 app.use('/api/v1/modules', modules);
 app.use('/api/v1/rol', rol);
-app.use('/api/v1/typeofpayment', typeofpayment);
+app.use('/api/v1/expensereport', expensereport);
 app.use('/api/v1/users', users);
 app.use('/api/v1/userspayments', userspayments);
 

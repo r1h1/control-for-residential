@@ -101,17 +101,11 @@ CREATE TABLE messages (
     FOREIGN KEY (idusersend) REFERENCES users(id)
 );
 
--- TIPOS DE PAGO AUTORIZADOS
-CREATE TABLE typeofpayment(
-    id INT PRIMARY KEY NOT NULL auto_increment,
-    name VARCHAR(100)
-);
-
 -- REPORTE DE PAGOS USUARIOS
 CREATE TABLE userspayments(
     id INT PRIMARY KEY NOT NULL auto_increment,
     iduserpay INT,
-    idpaymentcontext INT,
+    typeofpayment INT,
     paymentmethod INT,
     filepayment TEXT,
     authorizationcode VARCHAR(50),
@@ -120,8 +114,7 @@ CREATE TABLE userspayments(
     createddate VARCHAR(50),
     paymentdateandhour VARCHAR(50),
     paystatus INT,
-    FOREIGN KEY (iduserpay) REFERENCES users(id),
-    FOREIGN KEY (idpaymentcontext) REFERENCES typeofpayment(id)
+    FOREIGN KEY (iduserpay) REFERENCES users(id)
 );
 
 -- REPORTE DE GASTOS ADMINSITRATIVOS

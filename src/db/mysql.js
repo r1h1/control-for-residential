@@ -48,7 +48,57 @@ mysqlConnection();
 //DEVOLVER TODOS LOS DATOS
 const data = (table) => {
     return new Promise((resolve, reject) => {
-        stringConnection.query(`SELECT DISTINCT * FROM ${table} ORDER BY id ASC`, (error, result) => {
+        stringConnection.query(`SELECT DISTINCT * FROM ${table} ORDER BY id DESC`, (error, result) => {
+            return error ? reject(error) : resolve(result);
+        });
+    });
+}
+
+
+//VER USUARIOS CON ROL, CASA Y DEMÁS
+const completeUserData = (table) => {
+    return new Promise((resolve, reject) => {
+        stringConnection.query(`SELECT users.id, users.fullname, users.address, users.phonenumber, users.email, users.nit, 
+        users.idrol, users.idhouse, users.status, users.gender, rol.name AS namerol, 
+        CONCAT(houses.housenumber,' ',houses.address) AS housenumber 
+        FROM ${table}
+        INNER JOIN rol ON users.idrol = rol.id
+        INNER JOIN houses ON users.idhouse = houses.id`, (error, result) => {
+            return error ? reject(error) : resolve(result);
+        });
+    });
+}
+
+
+//VER PAGOS DE USUARIO CON TODA LA INFORMACIÓN REQUERIDA
+const completeUserPaymentInformation = (table) => {
+    return new Promise((resolve, reject) => {
+        stringConnection.query(`SELECT userspayments.id, userspayments.iduserpay, userspayments.typeofpayment, userspayments.paymentmethod, 
+        userspayments.filepayment, userspayments.authorizationcode, userspayments.totalpay, userspayments.comment, 
+        userspayments.createddate, userspayments.paymentdateandhour, userspayments.paystatus, users.fullname, 
+        CONCAT(houses.housenumber, ' ', houses.address) AS housenumber 
+        FROM ${table}
+        INNER JOIN users ON userspayments.iduserpay = users.id 
+        INNER JOIN houses ON users.idhouse = houses.id
+        ORDER BY userspayments.paystatus ASC`, (error, result) => {
+            return error ? reject(error) : resolve(result);
+        });
+    });
+}
+
+
+//VER PAGOS DE USUARIO CON TODA LA INFORMACIÓN REQUERIDA SOLAMENTE UN USUARIO
+const completeOnlyUserPaymentInformation = (table, id) => {
+    return new Promise((resolve, reject) => {
+        stringConnection.query(`SELECT userspayments.id, userspayments.iduserpay, userspayments.typeofpayment, userspayments.paymentmethod, 
+        userspayments.filepayment, userspayments.authorizationcode, userspayments.totalpay, userspayments.comment, 
+        userspayments.createddate, userspayments.paymentdateandhour, userspayments.paystatus, users.fullname, 
+        CONCAT(houses.housenumber, ' ', houses.address) AS housenumber 
+        FROM ${table}
+        INNER JOIN users ON userspayments.iduserpay = users.id 
+        INNER JOIN houses ON users.idhouse = houses.id
+        WHERE userspayments.iduserpay=${id}
+        ORDER BY userspayments.paystatus ASC`, (error, result) => {
             return error ? reject(error) : resolve(result);
         });
     });
@@ -58,7 +108,7 @@ const data = (table) => {
 //DEVOLVER UN SOLO DATO POR ID
 const oneData = (table, id) => {
     return new Promise((resolve, reject) => {
-        stringConnection.query(`SELECT DISTINCT * FROM ${table} WHERE id=${id}`, (error, result) => {
+        stringConnection.query(`SELECT DISTINCT * FROM ${table} WHERE id=${id} ORDER BY id DESC`, (error, result) => {
             return error ? reject(error) : resolve(result);
         });
     });
@@ -96,7 +146,7 @@ const deleteData = (table, data) => {
 //CONSULTAR POR QUERY
 const query = (table, query) => {
     return new Promise((resolve, reject) => {
-        stringConnection.query(`SELECT * FROM ${table} WHERE ?`, query, (error, result) => {
+        stringConnection.query(`SELECT * FROM ${table} WHERE ? ORDER BY id DESC`, query, (error, result) => {
             return error ? reject(error) : resolve(result[0]);
         });
     });
@@ -104,10 +154,13 @@ const query = (table, query) => {
 
 //SE EXPORTAN LOS PROTOCOLOS PARA MANEJO DE INFO
 module.exports = {
+    completeUserData,
     data,
     oneData,
     addData,
     deleteData,
     query,
-    rolData
+    rolData,
+    completeUserPaymentInformation,
+    completeOnlyUserPaymentInformation
 }

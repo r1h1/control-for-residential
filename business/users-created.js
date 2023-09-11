@@ -302,7 +302,7 @@ const getAllUsers = async () => {
                         <td>${dataObtained.body[i].phonenumber}</td>
                         <td>${dataObtained.body[i].email}</td>
                         <td>${dataObtained.body[i].nit}</td>
-                        <td>${dataObtained.body[i].idhouse}</td>
+                        <td>${dataObtained.body[i].housenumber}</td>
                         <td>${dataObtained.body[i].status === 1 ? 'ACTIVO' : 'INACTIVO'}</td>
                         <td>${dataObtained.body[i].gender === 1 ? 'Masculino' : 'Femenino'}</td>
                         <td><button class="btn btn-danger" title="Inactivar Usuario" onclick="inactiveUser('${dataObtained.body[i].fullname}','${dataObtained.body[i].address}',
@@ -347,7 +347,7 @@ const inactiveUser = (fullname, address, phonenumber, email, nit, idrol, idhouse
 
     Swal.fire({
         icon: 'info',
-        title: '¿Seguro?',
+        title: '¿Deseas inactivar el usuario ' + fullname + '?',
         text: 'Al guardar los cambios estos no podrán ser recuperados',
         showDenyButton: true,
         confirmButtonText: 'Continuar',
@@ -453,7 +453,7 @@ const activeUser = (fullname, address, phonenumber, email, nit, idrol, idhouse, 
 
     Swal.fire({
         icon: 'info',
-        title: '¿Seguro?',
+        title: '¿Deseas activar el usuario ' + fullname + '?',
         text: 'Al guardar los cambios estos no podrán ser recuperados',
         showDenyButton: true,
         confirmButtonText: 'Continuar',

@@ -9,9 +9,9 @@ module.exports = function (dbInjected) {
         db = require("../../db/mysql");
     }
 
-    //VER TODOS LOS DATOS
-    const data = (table) => {
-        return db.data(dataTable)
+    //VER TODOS LOS DATOS DE USUARIO COMPLETOS
+    const completeUserData = (table) => {
+        return db.completeUserData(dataTable)
     }
 
     //VER UN DATO
@@ -61,9 +61,9 @@ module.exports = function (dbInjected) {
     }
 
     return {
-        data,
         oneData,
         deleteData,
-        addData
+        addData,
+        completeUserData
     }
 }

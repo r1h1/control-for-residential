@@ -1,6 +1,7 @@
 //ROUTES
 const globalApiGetModulesPerRol = 'http://localhost:3002/api/v1/modules/rol/';
 const globalApiGetPaymentReport = 'http://localhost:3002/api/v1/userspayments/';
+const globalApiGetPaymentOnlyUser = 'http://localhost:3002/api/v1/userspayments/onlyuser/'
 
 
 //VALIDATE EXIST TOKEN IN SESSION STORAGE
@@ -361,7 +362,8 @@ const getAllUsersPayments = async () => {
 
                 bodydata += `
                     <tr class="text-center">
-                        <td>${dataObtained.body[i].iduserpay}</td>
+                        <td>${dataObtained.body[i].fullname}</td>
+                        <td>${dataObtained.body[i].housenumber}</td>
                         <td>${dataObtained.body[i].paymentmethod === 1 ? 'Efectivo' : dataObtained.body[i].paymentmethod === 2 ? 'Tarjeta' : dataObtained.body[i].paymentmethod === 3 ? 'Transferencia Bancaria' :
                         dataObtained.body[i].paymentmethod === 4 ? 'Crédito' : 'Otro'}</td>
                         <td>${filePayment}</td>
@@ -369,7 +371,7 @@ const getAllUsersPayments = async () => {
                         <td>Q${dataObtained.body[i].totalpay.toFixed(2)}</td>
                         <td>${dataObtained.body[i].comment}</td>
                         <td>${dataObtained.body[i].paymentdateandhour}</td>
-                        <td>${dataObtained.body[i].paystatus === 0 ? 'PENDIENTE APROBACIÓN' : 'APROBADO'}</td>
+                        <td>${dataObtained.body[i].paystatus === 0 ? 'PENDIENTE APROBACIÓN' : dataObtained.body[i].paystatus === 1 ? 'APROBADO' : 'DENEGADO'}</td>
                         <td>${deleteButton}</td>
                     </tr>
                 `;
@@ -382,7 +384,14 @@ const getAllUsersPayments = async () => {
     }
 
     try {
-        const response = await fetch(globalApiGetPaymentReport, requestOptions);
+
+        let response = '';
+        if (userInformation[0].idrol != 1 && userInformation[0].idrol != 2) {
+            response = await fetch(globalApiGetPaymentOnlyUser + userInformation[0].id, requestOptions);
+        }
+        else {
+            response = await fetch(globalApiGetPaymentReport, requestOptions);
+        }
         const dataObtained = await response.json();
         showData(dataObtained);
     } catch (error) {

@@ -5,16 +5,16 @@ const responses = require('../../network/responses');
 const controller = require('./index');
 
 //RUTAS PARA CONSULTAR
-router.get('/', security(), data);
+router.get('/', security(), completeUserData);
 router.get('/:id', security(), oneData);
 router.post('/', security(), addData);
 router.put('/', security(), deleteData);
 
 
-//CONSULTAR TODOS LOS ÍTEMS
-async function data(req, res, next) {
+//CONSULTAR TODOS LOS ÍTEMS CON TODOS LOS DATOS RELACIONADOS DEL USUARIO
+async function completeUserData(req, res, next) {
     try {
-        const items = await controller.data().then((items) => {
+        const items = await controller.completeUserData().then((items) => {
             responses.success(req, res, items, 200);
         });
     }
@@ -22,6 +22,7 @@ async function data(req, res, next) {
         next(err);
     }
 };
+
 
 //CONSULTAR UN SOLO ÍTEM
 async function oneData(req, res, next) {

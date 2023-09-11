@@ -10,8 +10,13 @@ module.exports = function (dbInjected) {
     }
 
     //VER TODOS LOS DATOS
-    const data = (table) => {
-        return db.data(dataTable)
+    const completeUserPaymentInformation = (table) => {
+        return db.completeUserPaymentInformation(dataTable)
+    }
+
+    //VER TODOS LOS DATOS POR USUARIO
+    const completeOnlyUserPaymentInformation = (id) => {
+        return db.completeOnlyUserPaymentInformation(dataTable, id)
     }
 
     //VER UN DATO
@@ -30,9 +35,10 @@ module.exports = function (dbInjected) {
     }
 
     return {
-        data,
+        completeUserPaymentInformation,
         oneData,
         deleteData,
-        addData
+        addData,
+        completeOnlyUserPaymentInformation
     }
 }

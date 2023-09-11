@@ -1,8 +1,6 @@
 //ROUTES
 const globalApiGetModulesPerRol = 'http://localhost:3002/api/v1/modules/rol/';
-const globalApiGetRols = 'http://localhost:3002/api/v1/rol/';
-const globalApiGetHouses = 'http://localhost:3002/api/v1/houses/';
-const globalApiUsers = 'http://localhost:3002/api/v1/users/';
+const globalApiGetPaymentReport = 'http://localhost:3002/api/v1/userspayments/';
 
 
 //VALIDATE EXIST TOKEN IN SESSION STORAGE
@@ -88,198 +86,8 @@ const menuForUserRol = async () => {
 menuForUserRol();
 
 
-
-//GET ROLS
-const getRols = async () => {
-
-    let rol = userInformation[0].idrol;
-    let myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem('signInToken'));
-
-    let requestOptions = {
-        method: 'GET',
-        headers: myHeaders,
-        redirect: 'follow'
-    };
-
-    const showData = (dataObtained) => {
-        try {
-            let rols = '';
-            for (let i = 0; i < dataObtained.body.length; i++) {
-                // Verifica si el rol es igual a 1 o si es diferente
-                if (rol === 1 || dataObtained.body[i].id !== 1) {
-                    rols += `
-                        <option value="${dataObtained.body[i].id}">${dataObtained.body[i].name}</option>
-                    `;
-                }
-            }
-            document.getElementById('rol').innerHTML = rols;
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    try {
-        const response = await fetch(globalApiGetRols, requestOptions);
-        const dataObtained = await response.json();
-        showData(dataObtained);
-    } catch (error) {
-        console.log('Error: ' + error);
-    }
-}
-getRols();
-
-
-//GET HOUSES
-const getHouses = async () => {
-
-    let myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem('signInToken'));
-
-    let requestOptions = {
-        method: 'GET',
-        headers: myHeaders,
-        redirect: 'follow'
-    };
-
-    const showData = (dataObtained) => {
-        try {
-            let houses = '';
-            for (let i = 0; i < dataObtained.body.length; i++) {
-                houses += `
-                        <option value="${dataObtained.body[i].id}">${dataObtained.body[i].address}, ${dataObtained.body[i].housenumber}</option>
-                    `;
-            }
-            document.getElementById('houses').innerHTML = houses;
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    try {
-        const response = await fetch(globalApiGetHouses, requestOptions);
-        const dataObtained = await response.json();
-        showData(dataObtained);
-    } catch (error) {
-        console.log('Error: ' + error);
-    }
-}
-getHouses();
-
-
-
-//CREATE NEW USER
-const createUser = () => {
-
-    let fullname = document.getElementById('fullname').value;
-    let address = document.getElementById('address').value;
-    let phonenumber = document.getElementById('phonenumber').value;
-    let email = document.getElementById('email').value;
-    let nit = document.getElementById('nit').value;
-    let idrol = document.getElementById('rol').value;
-    let idhouse = document.getElementById('houses').value;
-    let gender = document.getElementById('gender').value;
-    let password = document.getElementById('password').value;
-    let err = 'Error Interno';
-
-    if (fullname === '' || phonenumber === '' || address === '' || nit === '' || idrol === '' || idhouse === '' || email === '' || gender === '' || password === '') {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Advertencia',
-            text: 'Llena todos los datos que se te solicitan',
-            footer: 'Si el problema persiste, por favor comunicarse con el administrador o enviar un mensaje usando la opción de soporte indicando el error.',
-            confirmButtonText: 'Entendido'
-        });
-    }
-    else {
-
-        let myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem('signInToken'));
-
-        var raw = JSON.stringify({
-            "fullname": fullname,
-            "address": address,
-            "phonenumber": phonenumber,
-            "email": email,
-            "nit": nit,
-            "idrol": idrol,
-            "idhouse": idhouse,
-            "status": 1,
-            "gender": gender,
-            "user": email,
-            "password": password
-        });
-
-        var requestOptions = {
-            method: 'POST',
-            headers: myHeaders,
-            body: raw,
-            redirect: 'follow'
-        };
-
-        fetch(globalApiUsers, requestOptions)
-            .then(response => response.json())
-            .then(dataObtained => showData(dataObtained))
-            .catch(error => err = error);
-
-        const showData = (dataObtained) => {
-            if (dataObtained.body === 'Error de Servidor') {
-                Swal.fire({
-                    icon: 'error',
-                    title: '¡Lo Sentimos!',
-                    text: 'No se pudo concretar la operación, intenta de nuevo',
-                    footer: 'Si el problema persiste, por favor comunicarse con el administrador o enviar un mensaje usando la opción de soporte indicando el error.',
-                    confirmButtonText: 'Entendido'
-                });
-            }
-            else {
-                if (dataObtained.status === 200 || dataObtained.status === 201 || dataObtained.status === 304) {
-                    try {
-                        Swal.fire({
-                            icon: 'success',
-                            title: '¡Correcto!',
-                            text: 'La operación se completó con éxito',
-                            footer: '',
-                            showDenyButton: false,
-                            showCancelButton: false,
-                            confirmButtonText: 'Entendido',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.reload();
-                            } else if (result.isDenied) {
-                                window.location.reload();
-                            }
-                        });
-                    }
-                    catch (err) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: '¡Lo Sentimos!',
-                            text: 'Sa ha generado un error interno',
-                            footer: 'Si el problema persiste, por favor comunicarse con el administrador o enviar un mensaje usando la opción de soporte indicando el error.',
-                            confirmButtonText: 'Entendido'
-                        });
-                    }
-                }
-                else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: '¡Lo Sentimos!',
-                        text: 'Sa ha generado un error interno',
-                        footer: 'Si el problema persiste, por favor comunicarse con el administrador o enviar un mensaje usando la opción de soporte indicando el error.',
-                        confirmButtonText: 'Entendido'
-                    });
-                }
-            }
-        }
-    }
-}
-
-// GET USERS
-const getAllUsers = async () => {
+// GET USER PAYMENT
+const getAllUsersPayments = async () => {
 
     let myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -294,29 +102,48 @@ const getAllUsers = async () => {
     const showData = (dataObtained) => {
         try {
             let bodydata = '';
+            let filePayment = '';
+            let deleteButton = '';
+
             for (let i = 0; i < dataObtained.body.length; i++) {
+
+                //IF THE FILE PAYMENT DATA IS EQUAL TO NO APLICA, NO SHOW IMG
+                if (dataObtained.body[i].filepayment === 'NO APLICA' || dataObtained.body[i].filepayment === '' || dataObtained.body[i].filepayment === null) {
+                    filePayment = 'NO APLICA';
+                }
+                else {
+                    filePayment = `<img src="${dataObtained.body[i].filepayment}" alt="payment-photo" width="150"/>`;
+                }
+
+
                 bodydata += `
                     <tr class="text-center">
                         <td>${dataObtained.body[i].fullname}</td>
-                        <td>${dataObtained.body[i].address}</td>
-                        <td>${dataObtained.body[i].phonenumber}</td>
-                        <td>${dataObtained.body[i].email}</td>
-                        <td>${dataObtained.body[i].nit}</td>
                         <td>${dataObtained.body[i].housenumber}</td>
-                        <td>${dataObtained.body[i].status === 1 ? 'ACTIVO' : 'INACTIVO'}</td>
-                        <td>${dataObtained.body[i].gender === 1 ? 'Masculino' : 'Femenino'}</td>
-                        <td><button class="btn btn-danger" title="Inactivar Usuario" onclick="inactiveUser('${dataObtained.body[i].fullname}','${dataObtained.body[i].address}',
-                        '${dataObtained.body[i].phonenumber}','${dataObtained.body[i].email}','${dataObtained.body[i].nit}',
-                        ${dataObtained.body[i].idrol},${dataObtained.body[i].idhouse},${dataObtained.body[i].gender},
-                        ${dataObtained.body[i].id})"><i class="mdl-color-text--gray-100 material-icons"
-                                    role="presentation">close</i></button></td>
-                        <td><button class="btn btn-success" title="Activar Usuario" onclick="activeUser('${dataObtained.body[i].fullname}','${dataObtained.body[i].address}',
-                        '${dataObtained.body[i].phonenumber}','${dataObtained.body[i].email}','${dataObtained.body[i].nit}',
-                        ${dataObtained.body[i].idrol},${dataObtained.body[i].idhouse},${dataObtained.body[i].gender},
-                        ${dataObtained.body[i].id})"><i class="mdl-color-text--gray-100 material-icons"
+                        <td>${dataObtained.body[i].paymentmethod === 1 ? 'Efectivo' : dataObtained.body[i].paymentmethod === 2 ? 'Tarjeta' : dataObtained.body[i].paymentmethod === 3 ? 'Transferencia Bancaria' :
+                        dataObtained.body[i].paymentmethod === 4 ? 'Crédito' : 'Otro'}</td>
+                        <td>${filePayment}</td>
+                        <td>${dataObtained.body[i].authorizationcode}</td>
+                        <td>Q${dataObtained.body[i].totalpay.toFixed(2)}</td>
+                        <td>${dataObtained.body[i].comment}</td>
+                        <td>${dataObtained.body[i].paymentdateandhour}</td>
+                        <td>${dataObtained.body[i].paystatus === 0 ? 'PENDIENTE APROBACIÓN' : dataObtained.body[i].paystatus === 1 ? 'APROBADO' : 'DENEGADO'}</td>
+                        <td><button class="btn btn-success" title="Aprobar pago" onclick="payApproval(${dataObtained.body[i].id},
+                            ${dataObtained.body[i].iduserpay}, ${dataObtained.body[i].paymentmethod},
+                            '${dataObtained.body[i].filepayment}','${dataObtained.body[i].authorizationcode}',${dataObtained.body[i].totalpay},'${dataObtained.body[i].comment}',
+                            '${dataObtained.body[i].paymentdateandhour}',${dataObtained.body[i].paystatus})"><i class="mdl-color-text--gray-100 material-icons"
                         role="presentation">done</i></button></td>
+                        <td><button class="btn btn-danger" title="Denegar pago" onclick="payDeny(${dataObtained.body[i].id},
+                            ${dataObtained.body[i].iduserpay}, ${dataObtained.body[i].paymentmethod},
+                            '${dataObtained.body[i].filepayment}','${dataObtained.body[i].authorizationcode}',${dataObtained.body[i].totalpay},'${dataObtained.body[i].comment}',
+                            '${dataObtained.body[i].paymentdateandhour}',${dataObtained.body[i].paystatus})"><i class="mdl-color-text--gray-100 material-icons"
+                                    role="presentation">close</i></button></td>
+                        <td><button class="btn btn-danger" onclick="deleteUserPayment(${dataObtained.body[i].id})">
+                        <i class="mdl-color-text--gray-100 material-icons"
+                        role="presentation">delete</i></button></td>
                     </tr>
                 `;
+
             }
             document.getElementById('bodydata').innerHTML = bodydata;
         } catch (err) {
@@ -325,7 +152,7 @@ const getAllUsers = async () => {
     }
 
     try {
-        const response = await fetch(globalApiUsers, requestOptions);
+        const response = await fetch(globalApiGetPaymentReport, requestOptions);
         const dataObtained = await response.json();
         showData(dataObtained);
     } catch (error) {
@@ -338,16 +165,29 @@ const getAllUsers = async () => {
         });
     }
 }
-getAllUsers();
+getAllUsersPayments();
 
 
 
-//INACTIVE USER
-const inactiveUser = (fullname, address, phonenumber, email, nit, idrol, idhouse, gender, id) => {
+//APPROVAL PAYMENT
+const payApproval = (id, iduserpay, paymentmethod, filepayment, authorizationcode, totalpay, comment, paymentdateandhour) => {
+
+    // Obtener la fecha actual
+    const fechaActual = new Date();
+
+    // Obtener el año, mes y día
+    const año = fechaActual.getFullYear();
+    const mes = fechaActual.getMonth() + 1;
+    const dia = fechaActual.getDate();
+    const hora = fechaActual.getHours();
+    const minutos = fechaActual.getMinutes();
+    const segundos = fechaActual.getSeconds();
+
+    let createddate = dia + '-' + mes + '-' + año + ' ,' + hora + ':' + minutos + ':' + segundos;
 
     Swal.fire({
         icon: 'info',
-        title: '¿Deseas inactivar el usuario ' + fullname + '?',
+        title: '¿Seguro?',
         text: 'Al guardar los cambios estos no podrán ser recuperados',
         showDenyButton: true,
         confirmButtonText: 'Continuar',
@@ -361,15 +201,16 @@ const inactiveUser = (fullname, address, phonenumber, email, nit, idrol, idhouse
 
             var bodyToDelete = JSON.stringify({
                 "id": id,
-                "fullname": fullname,
-                "address": address,
-                "phonenumber": phonenumber,
-                "email": email,
-                "nit": nit,
-                "idrol": idrol,
-                "idhouse": idhouse,
-                "status": 0,
-                "gender": gender
+                "iduserpay": iduserpay,
+                "typeofpayment": paymentmethod,
+                "paymentmethod": paymentmethod,
+                "filepayment": filepayment,
+                "authorizationcode": authorizationcode,
+                "totalpay": totalpay,
+                "comment": comment,
+                "createddate": createddate,
+                "paymentdateandhour": paymentdateandhour,
+                "paystatus": 1
             });
 
             var requestOptions = {
@@ -379,7 +220,7 @@ const inactiveUser = (fullname, address, phonenumber, email, nit, idrol, idhouse
                 redirect: 'follow'
             };
 
-            fetch(globalApiUsers, requestOptions)
+            fetch(globalApiGetPaymentReport, requestOptions)
                 .then(response => response.json())
                 .then(dataObtained => showData(dataObtained))
                 .catch(error => console.log('Error: ' + error))
@@ -448,12 +289,25 @@ const inactiveUser = (fullname, address, phonenumber, email, nit, idrol, idhouse
 }
 
 
-//ACTIVE USER
-const activeUser = (fullname, address, phonenumber, email, nit, idrol, idhouse, gender, id) => {
+//DENY PAYMENT
+const payDeny = (id, iduserpay, paymentmethod, filepayment, authorizationcode, totalpay, comment, paymentdateandhour) => {
+
+    // Obtener la fecha actual
+    const fechaActual = new Date();
+
+    // Obtener el año, mes y día
+    const año = fechaActual.getFullYear();
+    const mes = fechaActual.getMonth() + 1;
+    const dia = fechaActual.getDate();
+    const hora = fechaActual.getHours();
+    const minutos = fechaActual.getMinutes();
+    const segundos = fechaActual.getSeconds();
+
+    let createddate = dia + '-' + mes + '-' + año + ' ,' + hora + ':' + minutos + ':' + segundos;
 
     Swal.fire({
         icon: 'info',
-        title: '¿Deseas activar el usuario ' + fullname + '?',
+        title: '¿Seguro?',
         text: 'Al guardar los cambios estos no podrán ser recuperados',
         showDenyButton: true,
         confirmButtonText: 'Continuar',
@@ -467,15 +321,16 @@ const activeUser = (fullname, address, phonenumber, email, nit, idrol, idhouse, 
 
             var bodyToDelete = JSON.stringify({
                 "id": id,
-                "fullname": fullname,
-                "address": address,
-                "phonenumber": phonenumber,
-                "email": email,
-                "nit": nit,
-                "idrol": idrol,
-                "idhouse": idhouse,
-                "status": 1,
-                "gender": gender
+                "iduserpay": iduserpay,
+                "typeofpayment": paymentmethod,
+                "paymentmethod": paymentmethod,
+                "filepayment": filepayment,
+                "authorizationcode": authorizationcode,
+                "totalpay": totalpay,
+                "comment": comment,
+                "createddate": createddate,
+                "paymentdateandhour": paymentdateandhour,
+                "paystatus": 3
             });
 
             var requestOptions = {
@@ -485,7 +340,104 @@ const activeUser = (fullname, address, phonenumber, email, nit, idrol, idhouse, 
                 redirect: 'follow'
             };
 
-            fetch(globalApiUsers, requestOptions)
+            fetch(globalApiGetPaymentReport, requestOptions)
+                .then(response => response.json())
+                .then(dataObtained => showData(dataObtained))
+                .catch(error => console.log('Error: ' + error))
+
+            const showData = (dataObtained) => {
+                if (dataObtained.body === 'Error de Servidor') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '¡Lo Sentimos!',
+                        text: 'No se pudo concretar la operación, intenta de nuevo',
+                        footer: 'Si el problema persiste, por favor comunicarse con el administrador o enviar un mensaje usando la opción de soporte indicando el error.',
+                        confirmButtonText: 'Entendido'
+                    });
+                }
+                else {
+                    if (dataObtained.status === 200 || dataObtained.status === 201 || dataObtained.status === 304) {
+                        try {
+                            Swal.fire({
+                                icon: 'success',
+                                title: '¡Correcto!',
+                                text: 'La operación se completó con éxito',
+                                footer: '',
+                                showDenyButton: false,
+                                showCancelButton: false,
+                                confirmButtonText: 'Entendido',
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.reload();
+                                } else if (result.isDenied) {
+                                    window.location.reload();
+                                }
+                            })
+                        }
+                        catch (err) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: '¡Lo Sentimos!',
+                                text: 'Sa ha generado un error interno',
+                                footer: 'Si el problema persiste, por favor comunicarse con el administrador o enviar un mensaje usando la opción de soporte indicando el error.',
+                                confirmButtonText: 'Entendido'
+                            });
+                        }
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: '¡Lo Sentimos!',
+                            text: 'Sa ha generado un error interno',
+                            footer: 'Si el problema persiste, por favor comunicarse con el administrador o enviar un mensaje usando la opción de soporte indicando el error.',
+                            confirmButtonText: 'Entendido'
+                        });
+                    }
+                }
+            }
+        } else if (result.isDenied) {
+            Swal.fire({
+                position: 'top-center',
+                icon: 'info',
+                title: '¡No te preocupes!',
+                text: 'No se modificó nada',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        }
+    });
+}
+
+
+//DELETE USER PAYMENT
+const deleteUserPayment = (id) => {
+
+    Swal.fire({
+        icon: 'info',
+        title: '¿Seguro?',
+        text: 'Al guardar los cambios estos no podrán ser recuperados',
+        showDenyButton: true,
+        confirmButtonText: 'Continuar',
+        denyButtonText: `Cancelar`,
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            let myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            myHeaders.append("Authorization", "Bearer " + sessionStorage.getItem('signInToken'));
+
+            var bodyToDelete = JSON.stringify({
+                "id": id
+            });
+
+            var requestOptions = {
+                method: 'PUT',
+                headers: myHeaders,
+                body: bodyToDelete,
+                redirect: 'follow'
+            };
+
+            fetch(globalApiGetPaymentReport, requestOptions)
                 .then(response => response.json())
                 .then(dataObtained => showData(dataObtained))
                 .catch(error => console.log('Error: ' + error))

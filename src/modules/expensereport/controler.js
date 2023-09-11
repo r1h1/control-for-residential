@@ -1,4 +1,4 @@
-const dataTable = 'userspayments';
+const dataTable = 'administrationpayments';
 const auth = require('../auth');
 
 module.exports = function (dbInjected) {
@@ -10,13 +10,8 @@ module.exports = function (dbInjected) {
     }
 
     //VER TODOS LOS DATOS
-    const completeUserPaymentInformation = (table) => {
-        return db.completeUserPaymentInformation(dataTable)
-    }
-
-    //VER TODOS LOS DATOS POR USUARIO
-    const completeOnlyUserPaymentInformation = (id) => {
-        return db.completeOnlyUserPaymentInformation(dataTable, id)
+    const data = (table) => {
+        return db.data(dataTable)
     }
 
     //VER UN DATO
@@ -35,10 +30,9 @@ module.exports = function (dbInjected) {
     }
 
     return {
-        completeUserPaymentInformation,
+        data,
         oneData,
         deleteData,
-        addData,
-        completeOnlyUserPaymentInformation
+        addData
     }
 }

@@ -5,17 +5,16 @@ const responses = require('../../network/responses');
 const controller = require('./index');
 
 //RUTAS PARA CONSULTAR
-router.get('/', security(), completeUserPaymentInformation);
+router.get('/', security(), data);
 router.get('/:id', security(), oneData);
-router.get('/onlyuser/:id', security(), completeOnlyUserPaymentInformation);
 router.post('/', addData);
 router.put('/', security(), deleteData);
 
 
 //CONSULTAR TODOS LOS ÍTEMS
-async function completeUserPaymentInformation(req, res, next) {
+async function data(req, res, next) {
     try {
-        const items = await controller.completeUserPaymentInformation().then((items) => {
+        const items = await controller.data().then((items) => {
             responses.success(req, res, items, 200);
         });
     }
@@ -23,19 +22,6 @@ async function completeUserPaymentInformation(req, res, next) {
         next(err);
     }
 };
-
-//CONSULTAR ÍTEMS POR USUARIO
-async function completeOnlyUserPaymentInformation(req, res, next) {
-    try {
-        const items = await controller.completeOnlyUserPaymentInformation(req.params.id).then((items) => {
-            responses.success(req, res, items, 200);
-        });
-    }
-    catch (err) {
-        next(err);
-    }
-};
-
 
 //CONSULTAR UN SOLO ÍTEM
 async function oneData(req, res, next) {

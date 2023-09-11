@@ -2,6 +2,7 @@
 const globalApiUrl = 'http://localhost:3002/api/v1/auth/login';
 const userApiUrl = 'http://localhost:3002/api/v1/users';
 
+
 //GET AND SET TOKEN WITH POST DATA OBTAINED
 const signIn = () => {
 
@@ -126,7 +127,7 @@ const getAllUserData = (id, tokenObtained) => {
         else {
             try {
                 if (dataObtained.body[0].status === 1) {
-                    let userInformation = window.btoa(dataObtained.body[0].fullname);
+                    let userInformation = window.btoa(JSON.stringify(dataObtained.body));
                     sessionStorage.setItem("sessionInfo", userInformation);
                     window.location.href = '../views/a/dashboard.html';
                 }

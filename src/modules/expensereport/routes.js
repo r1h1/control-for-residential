@@ -7,6 +7,7 @@ const controller = require('./index');
 //RUTAS PARA CONSULTAR
 router.get('/', security(), data);
 router.get('/:id', security(), oneData);
+router.get('/dates/:startDate/:finishDate', security(), paymentsWithDates);
 router.post('/', addData);
 router.put('/', security(), deleteData);
 
@@ -34,6 +35,20 @@ async function oneData(req, res, next) {
         next(err);
     }
 };
+
+
+//CONSULTAR ÍTEMS POR FECHAS
+async function paymentsWithDates(req, res, next) {
+    try {
+        const items = await controller.paymentsWithDates(req.params.startDate, req.params.finishDate).then((items) => {
+            responses.success(req, res, items, 200);
+        });
+    }
+    catch (err) {
+        next(err);
+    }
+};
+
 
 //CREAR UN NUEVO ITEM
 async function addData(req, res, next) {

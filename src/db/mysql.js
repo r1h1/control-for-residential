@@ -125,6 +125,16 @@ const rolData = (table, idrol) => {
 }
 
 
+//DEVOLVER DATOS DE PAGOS ADMINISTRATIVOS POR FECHA
+const paymentsWithDates = (table, startDate, finishDate) => {
+    return new Promise((resolve, reject) => {
+        stringConnection.query(`SELECT * FROM ${table} WHERE createddate >= '${startDate}' AND createddate <= '${finishDate}';`, (error, result) => {
+            return error ? reject(error) : resolve(result);
+        });
+    });
+}
+
+
 //INSERTAR UN REGISTRO DE LA BASE DE DATOS
 const addData = (table, data) => {
     return new Promise((resolve, reject) => {
@@ -162,5 +172,6 @@ module.exports = {
     query,
     rolData,
     completeUserPaymentInformation,
-    completeOnlyUserPaymentInformation
+    completeOnlyUserPaymentInformation,
+    paymentsWithDates
 }

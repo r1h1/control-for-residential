@@ -96,11 +96,12 @@ const expenseReport = () => {
     const año = fechaActual.getFullYear();
     const mes = fechaActual.getMonth() + 1;
     const dia = fechaActual.getDate();
-    const hora = fechaActual.getHours();
-    const minutos = fechaActual.getMinutes();
-    const segundos = fechaActual.getSeconds();
 
-    let createddate = dia + '-' + mes + '-' + año + ' ,' + hora + ':' + minutos + ':' + segundos;
+    // Agregar ceros antes del mes y día si son menores a 10
+    const mesConCeros = mes < 10 ? '0' + mes : mes;
+    const diaConCeros = dia < 10 ? '0' + dia : dia;
+
+    let createddate = año + '-' + mesConCeros + '-' + diaConCeros;
     let paymentdateandhour = document.getElementById('paymentdateandhour').value;
     let comment = document.getElementById('comment').value;
     let totalpay = document.getElementById('totalpay').value;

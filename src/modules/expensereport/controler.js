@@ -19,6 +19,11 @@ module.exports = function (dbInjected) {
         return db.oneData(dataTable, id);
     }
 
+    //VER DATOS POR FECHAS
+    const paymentsWithDates = (startDate, finishDate) => {
+        return db.paymentsWithDates(dataTable, startDate, finishDate);
+    }
+
     //AÑADIR DATOS
     const addData = (body) => {
         return db.addData(dataTable, body);
@@ -33,6 +38,7 @@ module.exports = function (dbInjected) {
         data,
         oneData,
         deleteData,
-        addData
+        addData,
+        paymentsWithDates
     }
 }

@@ -1,6 +1,6 @@
 //ROUTES
-const globalApiGetModulesPerRol = 'http://localhost:3002/api/v1/modules/rol/';
-const globalApiGetUsersReport = 'http://localhost:3002/api/v1/userspayments/dates/';
+const globalApiGetModulesPerRol = 'https://api-residenciales-cerro-alto.onrender.com/api/v1/modules/rol/';
+const globalApiGetUsersReport = 'https://api-residenciales-cerro-alto.onrender.com/api/v1/userspayments/dates/';
 
 
 //VALIDATE EXIST TOKEN IN SESSION STORAGE

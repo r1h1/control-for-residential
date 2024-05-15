@@ -128,7 +128,7 @@ CREATE TABLE auth (
 INSERT INTO `auth` (`id`, `user`, `password`) VALUES
 (1, 'carriaza@bdg.com.gt', '$2b$05$ZvQya7Q4OXBvrXKZEZdkVe3tJWe42DyO5NmLSLPkRrqmezQvDg1LO'),
 (2, 'drivas@bdg.com.gt', '$2b$05$XQA2QoPxQ5h0ws2VLcsry.5LTRirtGecKO/iHfOeYNzTF0cz4sKpO'),
-(3, 'carriazac@bdg.com.gt', '$2b$05$LA9EbYDl2hUGUugWxYxcPud/t9PHVnubaYs3/fVs6TJO6m8yGZn5y');
+(3, 'A3', '$2b$05$LA9EbYDl2hUGUugWxYxcPud/t9PHVnubaYs3/fVs6TJO6m8yGZn5y');
 
 INSERT INTO `houses` (`id`, `address`, `housenumber`, `statuspay`) VALUES
 (1, '4av 6-03', 'A1', 1),

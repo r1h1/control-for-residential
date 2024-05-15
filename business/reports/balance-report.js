@@ -83,7 +83,7 @@ const generateReport = async () => {
                     let bodydata = '';
                     let totalPayment = 0;
                     let totalExpensed = 0;
-                    for (let i = 0; i < dataObtained.body.length; i++) {
+                    for (let i = 0; i < Math.min(dataObtained.body.length, dataObtained2.body.length); i++) {
                         bodydata += `
                                         <tr>
                                             <td>${dataObtained.body[i].createddate}</td>
@@ -91,12 +91,13 @@ const generateReport = async () => {
                                             <td>Q${dataObtained2.body[i].totalpay.toFixed(2)}</td>
                                         </tr>
                                     `;
-                        totalPayment = parseFloat(totalPayment) + parseFloat(dataObtained.body[i].totalpay);
-                        totalExpensed = parseFloat(totalExpensed) + parseFloat(dataObtained2.body[i].totalpay);
+                    totalPayment = parseFloat(totalPayment) + parseFloat(dataObtained.body[i].totalpay);
+                    totalExpensed = parseFloat(totalExpensed) + parseFloat(dataObtained2.body[i].totalpay);
                     }
                     document.getElementById('dataTableBody').innerHTML = bodydata;
                     document.getElementById('totalPay').innerHTML = totalPayment.toFixed(2);
                     document.getElementById('totalExpensed').innerHTML = totalExpensed.toFixed(2);
+
                 }
             } catch (err) {
                 console.log(err);

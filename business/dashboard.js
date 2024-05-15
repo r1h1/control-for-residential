@@ -154,10 +154,10 @@ const generateBalance = async () => {
 
             let totalPayment = 0;
             let totalExpensed = 0;
-            for (let i = 0; i < dataObtained.body.length; i++) {
+            for (let i = 0; i < Math.min(dataObtained.body.length, dataObtained2.body.length); i++) {
                 totalPayment = parseFloat(totalPayment) + parseFloat(dataObtained.body[i].totalpay);
                 totalExpensed = parseFloat(totalExpensed) + parseFloat(dataObtained2.body[i].totalpay);
-            }
+            }    
 
             const ctx = document.getElementById('myChartBalance');
 
@@ -239,10 +239,10 @@ const generateActualMonth = async() => {
 
             let totalPayment = 0;
             let totalExpensed = 0;
-            for (let i = 0; i < dataObtained.body.length; i++) {
+            for (let i = 0; i < Math.min(dataObtained.body.length, dataObtained2.body.length); i++) {
                 totalPayment = parseFloat(totalPayment) + parseFloat(dataObtained.body[i].totalpay);
                 totalExpensed = parseFloat(totalExpensed) + parseFloat(dataObtained2.body[i].totalpay);
-            }
+            }            
 
             const ctx = document.getElementById('myChartActualMonth');
 
@@ -277,7 +277,7 @@ const generateActualMonth = async() => {
         Swal.fire({
             icon: 'error',
             title: '¡Lo Sentimos!',
-            text: 'Desconexión con el servidor de datos, refresque',
+            text: error,
             footer: 'Si el problema persiste, por favor comunicarse con el administrador o enviar un mensaje usando la opción de soporte indicando el error.',
             confirmButtonText: 'Entendido'
         });

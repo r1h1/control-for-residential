@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <!-- SWEET ALERT 2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="icon" sizes="192x192" href="../../../assets/img/logo.png">
+    <title>Pluton Software</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th,
+        td {
+            width: 100%;
+            padding: 10px;
+            text-align: left;
+            border-bottom: 2px solid #1D7632;
+        }
+
+        th {
+            width: 100%;
+            background-color: #B1CD9D;
+        }
+
+        .img-div {
+            text-align: center;
+        }
+
+        .summary {
+            font-weight: bold;
+        }
+
+        .comments {
+            margin-top: 20px;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="img-div">
+            <img src="../../../assets/img/logo.png" alt="logo" width="70">
+        </div>
+        <h1 class="fw-bold h3 mt-4">Reporte de Ingresos</h1>
+        <p class="mt-5">Período del Reporte:</p>
+        <div class="row g-3 mb-4">
+            <div class="col">
+                <label class="form-label">Fecha inicio</label>
+                <input type="date" class="form-control" id="startDate">
+            </div>
+            <div class="col">
+                <label class="form-label">Fecha fin</label>
+                <input type="date" class="form-control" id="finishDate">
+            </div>
+            <div class="col-lg-12">
+                <button class="btn btn-success w-100" onclick="generateReport()">Generar reporte</button>
+                <a href="../view-reports.html" class="btn btn-danger w-100 mt-2">Volver</a>
+            </div>
+        </div>
+
+        <div class="table-responsive" id="dataTableReport">
+            <table class="w-100">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Descripción</th>
+                        <th>Ingresos (Q)</th>
+                    </tr>
+                </thead>
+                <tbody id="dataTableBody">
+                    <!-- DATA -->
+                </tbody>
+            </table>
+            <div class="text-end">
+                <p class="h4">Total</p>
+                <p class="fw-bold h4">Q<span id="totalPay">0.00</span></p>
+            </div>
+        </div>
+
+        <div class="comments">
+            <p>Pluton Software, reporte</p>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+    <script src="../../../business/reports/pay-report.js"></script>
+    <script>
+        document.getElementById('dataTableReport').style.display = 'none';
+    </script>
+</body>
+
+</html>
